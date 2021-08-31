@@ -21,8 +21,8 @@ namespace MediaPrint
 
         public DictionaryMedia(Dictionary<string, object> media, IFormatProvider formatProvider)
         {
-            _media = media;
-            _formatProvider = formatProvider;
+            _media = media ?? throw new ArgumentNullException(nameof(media));
+            _formatProvider = formatProvider ?? throw new ArgumentNullException(nameof(formatProvider));
         }
 
         public IEnumerable<string> Keys => _media.Keys;
