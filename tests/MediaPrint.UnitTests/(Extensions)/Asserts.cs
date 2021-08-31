@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 using Xunit.Abstractions;
 
 namespace MediaPrint.UnitTests
@@ -7,6 +8,11 @@ namespace MediaPrint.UnitTests
     {
         public static void EqualJson(string expectedJson, string actualJson, ITestOutputHelper output = null)
         {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                expectedJson = expectedJson.Replace("\r\n", "\n");
+                actualJson = actualJson.Replace("\r\n", "\n");
+            }
             JObject expected = JObject.Parse(expectedJson);
             JObject actual = JObject.Parse(actualJson);
             if (output != null)
