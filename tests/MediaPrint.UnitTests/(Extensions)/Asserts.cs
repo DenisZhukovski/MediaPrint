@@ -10,8 +10,8 @@ namespace MediaPrint.UnitTests
         {
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                expectedJson = expectedJson.Replace("\n", "\r\n");
-                actualJson = actualJson.Replace("\n", "\r\n");
+                expectedJson = expectedJson.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
+                actualJson = actualJson.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
             }
             JObject expected = JObject.Parse(expectedJson);
             JObject actual = JObject.Parse(actualJson);
