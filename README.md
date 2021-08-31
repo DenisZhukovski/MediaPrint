@@ -37,7 +37,7 @@ var myFooJson = new Foo().ToJson(); // Foo class should implement IPrntable inte
 Sometimes it's necessary to have an access to objects' data but located in memory. [DictionaryMedia](https://github.com/DenisZhukovski/MediaPrint/blob/main/src/DictionaryMedia.cs) class was introduced to manage this needs.
 
 ```cs
-var myFooDictionary = new Foo().ToDictionary(); // Foo class should implement IPrntable interface
+var myFooDictionary = new Foo().ToDictionary(); // Foo class should implement IPrintable interface
 ```
 # Status
 
