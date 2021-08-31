@@ -41,7 +41,15 @@ var myFooDictionary = new Foo().ToDictionary(); // Foo class should implement IP
 ```
 # Status
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=coverage)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=alert_status)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=security_rating)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
+
+# Technical Depth
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=bugs)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=code_smells)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=sqale_index)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
