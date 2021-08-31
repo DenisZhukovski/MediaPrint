@@ -93,7 +93,11 @@ namespace MediaPrint
 
         public override int GetHashCode()
         {
+#if NETSTANDARD2_0
+            return _media.GetHashCode();
+#else
             return HashCode.Combine(_media);
+#endif
         }
     }
 }
