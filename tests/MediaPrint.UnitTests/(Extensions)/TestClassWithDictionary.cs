@@ -3,17 +3,22 @@ using System.Collections.Generic;
 
 namespace MediaPrint.UnitTests
 {
-    public class TestClassWithArray : IPrintable
+    public class TestClassWithDictionary : IPrintable
     {
         private readonly string _description;
-        private readonly IEnumerable<TestClass> _items;
+        private readonly Dictionary<string, object> _items;
 
-        public TestClassWithArray(string description, IEnumerable<TestClass> items)
+        public TestClassWithDictionary(string description, IEnumerable<KeyValuePair<string, object>> items)
+            : this(description, new Dictionary<string, object>(items))
+        {
+        }
+
+        public TestClassWithDictionary(string description, Dictionary<string, object> items)
         {
             _description = description;
             _items = items;
         }
-
+       
         public void PrintTo(IMedia media)
         {
             _ = media ?? throw new ArgumentNullException(nameof(media));

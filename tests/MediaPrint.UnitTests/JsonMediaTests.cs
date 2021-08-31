@@ -59,5 +59,29 @@ namespace MediaPrint.UnitTests
                 _output
             );
         }
+
+        [Fact]
+        public void PrintDictionary()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""Desciption"": ""Description1"",
+                    ""Items"": {
+                        ""Driver"": ""Driver1"",
+                        ""Order"": ""Order1""
+                    }
+                }",
+                new TestClassWithDictionary(
+                    "Description1",
+                    new Dictionary<string, object>
+                    {
+                        { "Driver", "Driver1" },
+                        { "Order", "Order1" }
+                    }
+                ).ToJson().ToString(),
+                _output
+            );
+        }
+
     }
 }

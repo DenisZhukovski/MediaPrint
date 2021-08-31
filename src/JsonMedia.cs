@@ -53,7 +53,7 @@ namespace MediaPrint
             }
             else
             {
-                if (value is IEnumerable items && !(value is string))
+                if (value is IEnumerable items && !(value is string) && !(value is IDictionary))
                 {
                     var array = new JArray();
                     foreach (var item in items)
@@ -61,6 +61,10 @@ namespace MediaPrint
                         array.Add(item.ToString());
                     }
                     _jObject[name] = array;
+                }
+                else if (value is IDictionary dictionary)
+                {
+                    _jObject[name] = JObject.Parse(JsonConvert.SerializeObject(dictionary, _formattig, _jsonSerializerSettings));
                 }
                 else
                 {
