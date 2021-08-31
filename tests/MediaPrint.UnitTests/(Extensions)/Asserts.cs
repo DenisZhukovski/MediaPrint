@@ -17,6 +17,7 @@ namespace MediaPrint.UnitTests
             JObject actual = JObject.Parse(actualJson);
             if (output != null)
             {
+                output.WriteLine("Platform:" + Environment.OSVersion.Platform.ToString());
                 output.WriteLine("Expected:" + expectedJson);
                 output.WriteLine("Actual:" + actualJson);
             }
