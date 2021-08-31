@@ -10,8 +10,8 @@ namespace MediaPrint.UnitTests
         {
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                expectedJson = expectedJson.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
-                actualJson = actualJson.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
+                expectedJson = ClearNewLine(expectedJson);
+                actualJson = ClearNewLine(actualJson);
             }
             JObject expected = JObject.Parse(expectedJson);
             JObject actual = JObject.Parse(actualJson);
@@ -23,6 +23,19 @@ namespace MediaPrint.UnitTests
             }
 
             Xunit.Assert.Equal(expected, actual, JToken.EqualityComparer);
+        }
+
+        private static string ClearNewLine(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                return data;
+            }
+            return data
+                .Replace("\\r\\n", string.Empty)
+                .Replace("\r\n", string.Empty)
+                .Replace("\\n", string.Empty)
+                .Replace("\n", string.Empty);
         }
     }
 }
