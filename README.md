@@ -19,7 +19,24 @@ public interface IPrintable
     void PrintTo(IMedia media);
 }
 ```
-[IMedia](https://github.com/DenisZhukovski/MediaPrint/blob/main/src/(Core)/IMedia.cs) interface represents an output where the object will be printed out. It can be easily printed out into any data format but main idea is to let the objects to print themselves. The most interesting idea is to let UI pages implement *IMedia* interface and bind objects data directly on UI elements.
+# IMedia
+
+[IMedia](https://github.com/DenisZhukovski/MediaPrint/blob/main/src/(Core)/IMedia.cs) interface represents an output where the object will be printed out. It can be easily printed out into any data format but main idea is to let the objects to print themselves. The most interesting insight is to let UI pages implement *IMedia* interface and bind objects data directly on UI elements.
+Initially interface implementation may look like this:
+```cs
+public class Foo : IPrintable
+{
+    private string _internalData1;
+    private string _internalData2;
+    
+    public void PrintTo(IMedia media)
+    {
+        media
+          .Put("Data1", _internalData1)
+          .Put("Data2", _internalData2);
+    }
+}
+``` 
 There are two printable formats supported out of the box:
 - Json
 - Dictionary
