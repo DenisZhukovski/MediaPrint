@@ -29,7 +29,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void ParsesStringForLazyObjects()
         {
-            var lazyObject = new TestClass() { Name = "Test Name", Date = new DateTime(2020, 12, 30) };
+            var lazyObject = new PrintableClass("Test Name", new DateTime(2020, 12, 30));
             Assert.Equal(
                 lazyObject.ToString(),
                 new DictionaryMedia()
@@ -98,7 +98,7 @@ namespace MediaPrint.UnitTests
             Assert.Null(
                 new DictionaryMedia()
                    .With("Test", 1)
-                   .ValueOrDefault<TestClass>("NotExisting")
+                   .ValueOrDefault<PrintableClass>("NotExisting")
             );
         }
 
@@ -116,37 +116,33 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void ParsesObjectFromString()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
                  expected,
-                 new DictionaryMedia()
-                    .With(
-                        "Test",
-                        JsonConvert.SerializeObject(expected)
-                    )
-                    .Value<TestClass>("Test")
+                 new DictionaryMedia().With(
+                     "Test",
+                     JsonConvert.SerializeObject((object)expected)
+                 )
+                 .Value<PrintableClass>("Test")
             );
         }
 
         [Fact]
         public void ConvertsTypeIfItsObjectType()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
                  expected,
                  new DictionaryMedia()
-                    .With(
-                        "Test",
-                        expected
-                    )
-                    .Value<TestClass>("Test")
+                    .With("Test", expected)
+                    .Value<PrintableClass>("Test")
             );
         }
 
         [Fact]
         public void ParsesFromJObject()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
                  expected.Name,
                  new DictionaryMedia()
@@ -161,7 +157,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void CastDictionaryMediaFromIPrintable()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
                  expected.Name,
                  new DictionaryMedia()
@@ -177,7 +173,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void DictionariesAreEqual_WhenContainTheSameValues()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
                  new DictionaryMedia().With(
                      "Test",
@@ -193,7 +189,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void DictionariesAreNotEqual_WhenContainDifferentValues()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.NotEqual(
                  new DictionaryMedia().With(
                      "Test",
@@ -208,7 +204,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void DictionariesAreNotEqual_WhenContainDifferentKeys()
         {
-            var expected = new TestClass { Name = "Test Name", Date = DateTime.Now };
+            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.NotEqual(
                  new DictionaryMedia().With(
                      "Test1",
