@@ -51,6 +51,14 @@ namespace MediaPrint
             {
                 _jObject[name] = jObject;
             }
+            else if (value is JsonMedia jsonMedia)
+            {
+                _jObject[name] = jsonMedia._jObject;
+            }
+            else if (value is IPrintable printable)
+            {
+                _jObject[name] = printable.ToJson()._jObject;
+            }
             else
             {
                 if (value is IEnumerable items && !(value is string) && !(value is IDictionary))

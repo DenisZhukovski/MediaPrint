@@ -15,7 +15,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void PrintStringProperties()
+        public void StringsDataIntoJson()
         {
             Asserts.EqualJson(
                 @"{
@@ -30,7 +30,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void PrintsComplexObjectAsJson()
+        public void ClassWithArrayIntoJson()
         {
             Asserts.EqualJson(
                 @"{
@@ -40,28 +40,20 @@ namespace MediaPrint.UnitTests
                     ""{\n  \""Name\"": \""Test2\"",\n  \""Date\"": \""2021-01-02T00:00:00\""\n}""
                   ]
                 }",
-                new TestClassWithArray(
+                new PrintableClassWithArray(
                     "Description1",
-                    new List<TestClass>
+                    new List<PrintableClass>
                     {
-                        new TestClass
-                        {
-                            Name = "Test1",
-                            Date = new DateTime(2021, 1, 1),
-                        },
-                        new TestClass
-                        {
-                            Name = "Test2",
-                            Date = new DateTime(2021, 1, 2),
-                        },
+                        new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                        new PrintableClass("Test2", new DateTime(2021, 1, 2)),
                     }
-                ).ToJson().ToString(),
+                ).ToString(),
                 _output
             );
         }
 
         [Fact]
-        public void PrintDictionary()
+        public void DictionaryIntoJson()
         {
             Asserts.EqualJson(
                 @"{
@@ -71,7 +63,7 @@ namespace MediaPrint.UnitTests
                         ""Order"": ""Order1""
                     }
                 }",
-                new TestClassWithDictionary(
+                new PrintableClassWithDictionary(
                     "Description1",
                     new Dictionary<string, object>
                     {
@@ -83,5 +75,39 @@ namespace MediaPrint.UnitTests
             );
         }
 
+        [Fact]
+        public void IPrintableIntoJson()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""Test"": {
+                        ""Name"": ""Name1"",
+                        ""Date"": ""1983-09-22T00:00:00""
+                    }
+                }",
+                new JsonMedia().With(
+                    "Test",
+                    new PrintableClass("Name1", new DateTime(1983, 09, 22))
+                ).ToString(),
+                _output
+            );
+        }
+
+        [Fact]
+        public void JsonMediaIntoJson()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""Test"": {
+                        ""Date"": ""1983-09-22T00:00:00""
+                    }
+                }",
+                new JsonMedia().With(
+                    "Test",
+                    new JsonMedia().With("Date", new DateTime(1983, 09, 22))
+                ).ToString(),
+                _output
+            );
+        }
     }
 }
