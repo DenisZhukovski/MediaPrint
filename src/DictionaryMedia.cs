@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -74,13 +75,9 @@ namespace MediaPrint
         {
             if (obj is DictionaryMedia expected && _media.Count == expected._media.Count)
             {
-                foreach (var key in expected.Keys)
+                foreach (var key in _media.Keys)
                 {
-                    var isEqual = object.Equals(
-                        expected.Value<object>(key),
-                        this.ValueOrDefault<object>(key)
-                    );
-                    if (!isEqual)
+                    if (!expected._media.ContainsKey(key) || !TheSame(_media[key], expected._media[key]))
                     {
                         return false;
                     }
@@ -98,6 +95,16 @@ namespace MediaPrint
 #else
             return HashCode.Combine(_media);
 #endif
+        }
+
+        private bool TheSame(object expected, object actual)
+        {
+            if (expected != null)
+            {
+                return expected.Equals(actual);
+            }
+
+            return actual == null;
         }
     }
 }

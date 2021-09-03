@@ -33,7 +33,7 @@ steps:
     projectKey: 'DenisZhukovski_MediaPrint'
     projectName: 'MediaPrint'
     extraProperties: |
-        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\tests\coverage.opencover.xml
+        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\tests\MediaPrint.UnitTests\coverage.opencover.xml
         sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx
 - task: VSBuild@1
   inputs:
