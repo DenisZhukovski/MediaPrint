@@ -23,13 +23,9 @@ namespace MediaPrint.Core
 
         public object Value()
         {
-            if (_value == null)
+            if (_value == null || _value is JToken)
             {
-                return null;
-            }
-            else if (_value is JToken jObject)
-            {
-                return jObject;
+                return _value;
             }
             else if (_value is JsonMedia jsonMedia)
             {
@@ -43,12 +39,7 @@ namespace MediaPrint.Core
             {
                 if (_value is IEnumerable items && !(_value is string) && !(_value is IDictionary))
                 {
-                    var array = new JArray();
-                    foreach (var item in items)
-                    {
-                        array.Add(new JValue(item, _formattig, _jsonSerializerSettings).Value());
-                    }
-                    return array;
+                    return ToJArray(items);
                 }
                 else if (_value is IDictionary dictionary)
                 {
@@ -56,18 +47,33 @@ namespace MediaPrint.Core
                 }
                 else
                 {
-                    string valueAsString;
-                    if (_value is DateTime)
-                    {
-                        valueAsString = ((DateTime)_value).ToString(_jsonSerializerSettings.DateFormatString);
-                    }
-                    else
-                    {
-                        valueAsString = _value.ToString();
-                    }
-                   return valueAsString;
+                    return AsString();
                 }
             }
+        }
+
+        private string AsString()
+        {
+            string valueAsString;
+            if (_value is DateTime)
+            {
+                valueAsString = ((DateTime)_value).ToString(_jsonSerializerSettings.DateFormatString);
+            }
+            else
+            {
+                valueAsString = _value.ToString();
+            }
+             return valueAsString;
+        }
+
+        private JArray ToJArray(IEnumerable items)
+        {
+            var array = new JArray();
+            foreach (var item in items)
+            {
+                array.Add(new JValue(item, _formattig, _jsonSerializerSettings).Value());
+            }
+            return array;
         }
     }
 }
