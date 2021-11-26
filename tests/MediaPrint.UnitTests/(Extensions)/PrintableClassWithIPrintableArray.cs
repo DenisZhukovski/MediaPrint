@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace MediaPrint.UnitTests
 {
-    public class PrintableClassWithArray : IPrintable
+    public class PrintableClassWithIPrintableArray : IPrintable
     {
         private readonly string _description;
         private readonly IEnumerable<PrintableClass> _items;
 
-        public PrintableClassWithArray(string description, IEnumerable<PrintableClass> items)
+        public PrintableClassWithIPrintableArray(string description, IEnumerable<PrintableClass> items)
         {
             _description = description;
             _items = items;

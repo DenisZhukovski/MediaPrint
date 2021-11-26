@@ -36,17 +36,43 @@ namespace MediaPrint.UnitTests
                 @"{
                   ""Desciption"": ""Description1"",
                   ""Items"": [
-                    ""{\n  \""Name\"": \""Test1\"",\n  \""Date\"": \""2021-01-01T00:00:00\""\n}"",
-                    ""{\n  \""Name\"": \""Test2\"",\n  \""Date\"": \""2021-01-02T00:00:00\""\n}""
+                    {
+                        ""Name"": ""Test1"",
+                        ""Date"": ""2021-01-01T00:00:00""
+                    },
+                    {
+                        ""Name"": ""Test2"",
+                        ""Date"": ""2021-01-02T00:00:00""
+                    }
                   ]
                 }",
-                new PrintableClassWithArray(
+                new PrintableClassWithIPrintableArray(
                     "Description1",
                     new List<PrintableClass>
                     {
                         new PrintableClass("Test1", new DateTime(2021, 1, 1)),
                         new PrintableClass("Test2", new DateTime(2021, 1, 2)),
                     }
+                ).ToString(),
+                _output
+            );
+        }
+
+        [Fact]
+        public void ClassWithIPrintableIntoJson()
+        {
+            Asserts.EqualJson(
+                @"{
+                  ""Desciption"": ""Description1"",
+                  ""Item"":
+                  {
+                    ""Name"": ""Test1"",
+                    ""Date"": ""2021-01-01T00:00:00""
+                  }
+                }",
+                new PrintableClassWithPrintableElement(
+                    "Description1",
+                    new PrintableClass("Test1", new DateTime(2021, 1, 1))
                 ).ToString(),
                 _output
             );
