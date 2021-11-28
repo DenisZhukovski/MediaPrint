@@ -104,6 +104,17 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
+        public void ValueOrDefault_ReturnsObject_WhenExists()
+        {
+            Assert.Equal(
+                new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                new DictionaryMedia()
+                   .With("Test", new PrintableClass("Test1", new DateTime(2021, 1, 1)))
+                   .ValueOrDefault<PrintableClass>("Test")
+            );
+        }
+
+        [Fact]
         public void ValueOrDefault_ReturnsMinDateTimeForDateTime_WhenDoesNotExist()
         {
             Assert.Equal(
