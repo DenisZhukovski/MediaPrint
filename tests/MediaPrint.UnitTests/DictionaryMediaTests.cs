@@ -212,6 +212,18 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
+        public void NotEqual_ToOtherObject()
+        {
+            Assert.NotEqual(
+                (object)new DictionaryMedia().With(
+                    "Test",
+                    new PrintableClass("Test Name", new DateTime(2021, 1, 1))
+                ),
+                new PrintableClass("Test Name", new DateTime(2021, 1, 1))
+            );
+        }
+
+        [Fact]
         public void Foreach_DoesNotFail()
         {
             var media = new DictionaryMedia().With(
