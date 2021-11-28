@@ -199,6 +199,19 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
+        public void Equal_WhenTheSameReference()
+        {
+            var media = new DictionaryMedia().With(
+                "Test",
+                new PrintableClass("Test Name", DateTime.Now)
+            );
+            Assert.Equal(
+                media,
+                media
+            );
+        }
+
+        [Fact]
         public void Equal_WhenContainTheSameValuesButEnumerable()
         {
             Assert.Equal(
