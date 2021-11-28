@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -182,6 +183,35 @@ namespace MediaPrint.UnitTests
                  new DictionaryMedia().With(
                      "Test",
                      expected
+                 )
+            );
+        }
+
+        [Fact]
+        public void DictionariesAreEqual_WhenContainTheSameValuesButEnumerable()
+        {
+            Assert.Equal(
+                 new DictionaryMedia().With(
+                     "Test",
+                     new PrintableClassWithIPrintableArray(
+                        "Description1",
+                        new List<PrintableClass>
+                        {
+                            new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                            new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                        }
+                    )
+                 ),
+                 new DictionaryMedia().With(
+                     "Test",
+                     new PrintableClassWithIPrintableArray(
+                        "Description1",
+                        new List<PrintableClass>
+                        {
+                            new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                            new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                        }
+                    )
                  )
             );
         }
