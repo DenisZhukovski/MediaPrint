@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using MediaPrint.Core;
+
+[assembly: InternalsVisibleTo("MediaPrint.UnitTests")]
 
 namespace MediaPrint
 {
-    public class DictionaryMedia : IMedia
+    public sealed class  DictionaryMedia : IMedia,
+        IEquatable<Dictionary<string, object>>,
+        IEquatable<IPrintable>
     {
         private readonly Dictionary<string, object> _media;
         private readonly IFormatProvider _formatProvider;
@@ -72,19 +78,19 @@ namespace MediaPrint
 
         public override bool Equals(object obj)
         {
-            if (obj is DictionaryMedia expected && _media.Count == expected._media.Count)
-            {
-                foreach (var key in _media.Keys)
-                {
-                    if (!expected._media.ContainsKey(key) || !TheSame(_media[key], expected._media[key]))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
+            return object.ReferenceEquals(this, obj)
+                || (obj is DictionaryMedia media
+                && new TheSameDictionary(_media, media._media).ToBool());
+        }
 
-            return false;
+        public bool Equals(Dictionary<string, object> other)
+        {
+            return new TheSameDictionary(_media, other).ToBool();
+        }
+
+        public bool Equals(IPrintable other)
+        {
+            return new TheSameDictionary(_media, other.ToDictionary()._media).ToBool();
         }
 
         public override int GetHashCode()
@@ -94,16 +100,6 @@ namespace MediaPrint
 #else
             return HashCode.Combine(_media);
 #endif
-        }
-
-        private bool TheSame(object expected, object actual)
-        {
-            if (expected != null)
-            {
-                return expected.Equals(actual);
-            }
-
-            return actual == null;
         }
     }
 }
