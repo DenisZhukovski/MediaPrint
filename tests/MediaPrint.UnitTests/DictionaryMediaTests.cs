@@ -217,6 +217,37 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
+        public void DictionariesAreEqual_ToIPrintable()
+        {
+            Assert.True(
+                 new DictionaryMedia().With(
+                     "Test",
+                     new PrintableClassWithIPrintableArray(
+                        "Description1",
+                        new List<PrintableClass>
+                        {
+                            new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                            new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                        }
+                    )
+                 ).Equals(
+                 new Dictionary<string, object>
+                 {
+                     { "TEST",
+                         new PrintableClassWithIPrintableArray(
+                             "Description1",
+                             new List<PrintableClass>
+                             {
+                                 new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                                 new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                             }
+                         )
+                     }
+                 })
+            );
+        }
+
+        [Fact]
         public void DictionariesAreNotEqual_WhenContainDifferentValues()
         {
             var expected = new PrintableClass("Test Name", DateTime.Now);
@@ -242,6 +273,30 @@ namespace MediaPrint.UnitTests
                  ),
                  new DictionaryMedia()
                     .With("Test2", expected)
+            );
+        }
+
+        [Fact]
+        public void ThrowsArgumentNullException_WhenFormatProviderIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DictionaryMedia((IFormatProvider)null)
+            );
+        }
+
+        [Fact]
+        public void ThrowsArgumentNullException_WhenMediaIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DictionaryMedia((Dictionary<string, object>)null)
+            );
+        }
+
+        [Fact]
+        public void ThrowsArgumentNullException_WhenBothArgumentsAreNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DictionaryMedia(null, null)
             );
         }
 

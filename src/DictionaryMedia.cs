@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -9,8 +10,8 @@ using MediaPrint.Core;
 namespace MediaPrint
 {
     public sealed class  DictionaryMedia : IMedia,
-        IEquatable<Dictionary<string, object>>,
-        IEquatable<IPrintable>
+        IEnumerable<KeyValuePair<string, object>>,
+        IEquatable<Dictionary<string, object>>
     {
         private readonly Dictionary<string, object> _media;
         private readonly IFormatProvider _formatProvider;
@@ -22,6 +23,11 @@ namespace MediaPrint
 
         public DictionaryMedia(IFormatProvider formatProvider)
             : this(new Dictionary<string, object>(), formatProvider)
+        {
+        }
+
+        public DictionaryMedia(Dictionary<string, object> media)
+            : this(media, CultureInfo.InvariantCulture)
         {
         }
 
@@ -88,11 +94,6 @@ namespace MediaPrint
             return new TheSameDictionary(_media, other).ToBool();
         }
 
-        public bool Equals(IPrintable other)
-        {
-            return new TheSameDictionary(_media, other.ToDictionary()._media).ToBool();
-        }
-
         public override int GetHashCode()
         {
 #if NETSTANDARD2_0
@@ -100,6 +101,16 @@ namespace MediaPrint
 #else
             return HashCode.Combine(_media);
 #endif
+        }
+
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        {
+            return _media.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _media.GetEnumerator();
         }
     }
 }
