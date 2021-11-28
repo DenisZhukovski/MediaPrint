@@ -172,7 +172,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreEqual_WhenContainTheSameValues()
+        public void Equal_WhenContainTheSameValues()
         {
             var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
@@ -188,7 +188,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreEqual_WhenContainTheSameValuesButEnumerable()
+        public void Equal_WhenContainTheSameValuesButEnumerable()
         {
             Assert.Equal(
                  new DictionaryMedia().With(
@@ -217,7 +217,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreEqual_ToIPrintable()
+        public void Equal_WhenTheSameDictionary()
         {
             Assert.True(
                  new DictionaryMedia().With(
@@ -250,14 +250,13 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void DictionariesAreNotEqual_WhenContainDifferentValues()
         {
-            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.NotEqual(
                  new DictionaryMedia().With(
                      "Test",
-                     expected
+                     new PrintableClass("Test Name", new DateTime(2021, 1, 1))
                  ),
                  new DictionaryMedia()
-                    .With("Test", expected)
+                    .With("Test", new PrintableClass("Test Name", new DateTime(2021, 1, 1)))
                     .With("SomeNumber", 1)
             );
         }
@@ -265,14 +264,15 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void DictionariesAreNotEqual_WhenContainDifferentKeys()
         {
-            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.NotEqual(
                  new DictionaryMedia().With(
                      "Test1",
-                     expected
+                     new PrintableClass("Test Name", new DateTime(2021, 1, 1))
                  ),
-                 new DictionaryMedia()
-                    .With("Test2", expected)
+                 new DictionaryMedia().With(
+                     "Test2",
+                     new PrintableClass("Test Name", new DateTime(2021, 1, 1))
+                 )
             );
         }
 
