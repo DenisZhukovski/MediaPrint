@@ -248,7 +248,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreNotEqual_WhenContainDifferentValues()
+        public void NotEqual_WhenContainDifferentValues()
         {
             Assert.NotEqual(
                  new DictionaryMedia().With(
@@ -262,7 +262,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreNotEqual_WhenContainDifferentKeys()
+        public void NotEqual_WhenContainDifferentKeys()
         {
             Assert.NotEqual(
                  new DictionaryMedia().With(
