@@ -26,7 +26,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void NotEqual_DifferentKeyValues()
         {
-            Assert.True(
+            Assert.False(
                 new TheSameDictionary(
                     new Dictionary<string, object>
                     {
@@ -43,7 +43,7 @@ namespace MediaPrint.UnitTests
         [Fact]
         public void NotEqual_DifferentKeys()
         {
-            Assert.True(
+            Assert.False(
                 new TheSameDictionary(
                     new Dictionary<string, object>
                     {
