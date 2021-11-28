@@ -212,6 +212,21 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
+        public void Foreach_DoesNotFail()
+        {
+            var media = new DictionaryMedia().With(
+                "Test",
+                new PrintableClass("Test Name", DateTime.Now)
+            );
+
+            foreach (var item in media)
+            {
+                Assert.NotEmpty(item.Key);
+                Assert.NotNull(item.Value);
+            }
+        }
+
+        [Fact]
         public void Equal_WhenContainTheSameValuesButEnumerable()
         {
             Assert.Equal(
