@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using MediaPrint.Core;
+
+[assembly: InternalsVisibleTo("MediaPrint.UnitTests")]
 
 namespace MediaPrint
 {
-    public class DictionaryMedia : IMedia
+    public sealed class  DictionaryMedia : IMedia,
+        IEnumerable<KeyValuePair<string, object>>,
+        IEquatable<Dictionary<string, object>>
     {
         private readonly Dictionary<string, object> _media;
         private readonly IFormatProvider _formatProvider;
@@ -16,6 +23,11 @@ namespace MediaPrint
 
         public DictionaryMedia(IFormatProvider formatProvider)
             : this(new Dictionary<string, object>(), formatProvider)
+        {
+        }
+
+        public DictionaryMedia(Dictionary<string, object> media)
+            : this(media, CultureInfo.InvariantCulture)
         {
         }
 
@@ -72,19 +84,14 @@ namespace MediaPrint
 
         public override bool Equals(object obj)
         {
-            if (obj is DictionaryMedia expected && _media.Count == expected._media.Count)
-            {
-                foreach (var key in _media.Keys)
-                {
-                    if (!expected._media.ContainsKey(key) || !TheSame(_media[key], expected._media[key]))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
+            return object.ReferenceEquals(this, obj)
+                || (obj is DictionaryMedia media
+                && new TheSameDictionary(_media, media._media).ToBool());
+        }
 
-            return false;
+        public bool Equals(Dictionary<string, object> other)
+        {
+            return new TheSameDictionary(_media, other).ToBool();
         }
 
         public override int GetHashCode()
@@ -96,14 +103,14 @@ namespace MediaPrint
 #endif
         }
 
-        private bool TheSame(object expected, object actual)
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
-            if (expected != null)
-            {
-                return expected.Equals(actual);
-            }
+            return _media.GetEnumerator();
+        }
 
-            return actual == null;
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _media.GetEnumerator();
         }
     }
 }

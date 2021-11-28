@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -103,6 +104,17 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
+        public void ValueOrDefault_ReturnsObject_WhenExists()
+        {
+            Assert.Equal(
+                new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                new DictionaryMedia()
+                   .With("Test", new PrintableClass("Test1", new DateTime(2021, 1, 1)))
+                   .ValueOrDefault<PrintableClass>("Test")
+            );
+        }
+
+        [Fact]
         public void ValueOrDefault_ReturnsMinDateTimeForDateTime_WhenDoesNotExist()
         {
             Assert.Equal(
@@ -171,7 +183,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreEqual_WhenContainTheSameValues()
+        public void Equal_WhenContainTheSameValues()
         {
             var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.Equal(
@@ -187,31 +199,155 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void DictionariesAreNotEqual_WhenContainDifferentValues()
+        public void Equal_WhenTheSameReference()
         {
-            var expected = new PrintableClass("Test Name", DateTime.Now);
+            var media = new DictionaryMedia().With(
+                "Test",
+                new PrintableClass("Test Name", DateTime.Now)
+            );
+            Assert.Equal(
+                media,
+                media
+            );
+        }
+
+        [Fact]
+        public void NotEqual_ToOtherObject()
+        {
+            Assert.NotEqual(
+                (object)new DictionaryMedia().With(
+                    "Test",
+                    new PrintableClass("Test Name", new DateTime(2021, 1, 1))
+                ),
+                new PrintableClass("Test Name", new DateTime(2021, 1, 1))
+            );
+        }
+
+        [Fact]
+        public void Foreach_DoesNotFail()
+        {
+            var media = new DictionaryMedia().With(
+                "Test",
+                new PrintableClass("Test Name", DateTime.Now)
+            );
+
+            foreach (var item in media)
+            {
+                Assert.NotEmpty(item.Key);
+                Assert.NotNull(item.Value);
+            }
+        }
+
+        [Fact]
+        public void Equal_WhenContainTheSameValuesButEnumerable()
+        {
+            Assert.Equal(
+                 new DictionaryMedia().With(
+                     "Test",
+                     new PrintableClassWithIPrintableArray(
+                        "Description1",
+                        new List<PrintableClass>
+                        {
+                            new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                            new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                        }
+                    )
+                 ),
+                 new DictionaryMedia().With(
+                     "Test",
+                     new PrintableClassWithIPrintableArray(
+                        "Description1",
+                        new List<PrintableClass>
+                        {
+                            new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                            new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                        }
+                    )
+                 )
+            );
+        }
+
+        [Fact]
+        public void Equal_WhenTheSameDictionary()
+        {
+            Assert.True(
+                 new DictionaryMedia().With(
+                     "Test",
+                     new PrintableClassWithIPrintableArray(
+                        "Description1",
+                        new List<PrintableClass>
+                        {
+                            new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                            new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                        }
+                    )
+                 ).Equals(
+                 new Dictionary<string, object>
+                 {
+                     { "TEST",
+                         new PrintableClassWithIPrintableArray(
+                             "Description1",
+                             new List<PrintableClass>
+                             {
+                                 new PrintableClass("Test1", new DateTime(2021, 1, 1)),
+                                 new PrintableClass("Test2", new DateTime(2021, 1, 2))
+                             }
+                         )
+                     }
+                 })
+            );
+        }
+
+        [Fact]
+        public void NotEqual_WhenContainDifferentValues()
+        {
             Assert.NotEqual(
                  new DictionaryMedia().With(
                      "Test",
-                     expected
+                     new PrintableClass("Test Name", new DateTime(2021, 1, 1))
                  ),
                  new DictionaryMedia()
-                    .With("Test", expected)
+                    .With("Test", new PrintableClass("Test Name", new DateTime(2021, 1, 1)))
                     .With("SomeNumber", 1)
             );
         }
 
         [Fact]
-        public void DictionariesAreNotEqual_WhenContainDifferentKeys()
+        public void NotEqual_WhenContainDifferentKeys()
         {
-            var expected = new PrintableClass("Test Name", DateTime.Now);
             Assert.NotEqual(
                  new DictionaryMedia().With(
                      "Test1",
-                     expected
+                     new PrintableClass("Test Name", new DateTime(2021, 1, 1))
                  ),
-                 new DictionaryMedia()
-                    .With("Test2", expected)
+                 new DictionaryMedia().With(
+                     "Test2",
+                     new PrintableClass("Test Name", new DateTime(2021, 1, 1))
+                 )
+            );
+        }
+
+        [Fact]
+        public void ThrowsArgumentNullException_WhenFormatProviderIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DictionaryMedia((IFormatProvider)null)
+            );
+        }
+
+        [Fact]
+        public void ThrowsArgumentNullException_WhenMediaIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DictionaryMedia((Dictionary<string, object>)null)
+            );
+        }
+
+        [Fact]
+        public void ThrowsArgumentNullException_WhenBothArgumentsAreNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new DictionaryMedia(null, null)
             );
         }
 

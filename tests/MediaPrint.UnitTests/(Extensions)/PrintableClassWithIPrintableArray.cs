@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MediaPrint.Core;
 
 namespace MediaPrint.UnitTests
 {
@@ -12,6 +13,18 @@ namespace MediaPrint.UnitTests
         {
             _description = description;
             _items = items;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PrintableClassWithIPrintableArray array
+                && _description == array._description
+                && new TheSameCollcetion(_items, array._items).ToBoolean();
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_description, _items);
         }
 
         public void PrintTo(IMedia media)
