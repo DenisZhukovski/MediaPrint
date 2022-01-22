@@ -45,6 +45,10 @@ namespace MediaPrint.Core
                 {
                     return JObject.Parse(JsonConvert.SerializeObject(dictionary, _formattig, _jsonSerializerSettings));
                 }
+                else if (_value is bool)
+                {
+                    return _value;
+                }
                 else
                 {
                     return AsString();
