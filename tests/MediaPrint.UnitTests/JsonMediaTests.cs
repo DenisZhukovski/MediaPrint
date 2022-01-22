@@ -25,7 +25,24 @@ namespace MediaPrint.UnitTests
                 new JsonMedia()
                     .With("Test", "Test String")
                     .With("Test2", "Test String2")
-                    .ToString()
+                    .ToString(),
+                _output
+            );
+        }
+
+        [Fact]
+        public void BoolDataIntoJson()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""IsTrue"" : true,
+                    ""IsFalse"" : false
+                }",
+                new JsonMedia()
+                    .With("IsTrue", true)
+                    .With("IsFalse", false)
+                    .ToString(),
+                _output
             );
         }
 
