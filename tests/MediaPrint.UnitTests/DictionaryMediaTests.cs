@@ -282,7 +282,7 @@ namespace MediaPrint.UnitTests
                         }
                     )
                  ).Equals(
-                 new Dictionary<string, object>
+                 new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
                  {
                      { "TEST",
                          new PrintableClassWithIPrintableArray(
@@ -356,8 +356,8 @@ namespace MediaPrint.UnitTests
         {
             Asserts.EqualJson(
                @"{
-                    ""TEST"" : ""Test String"",
-                    ""TEST2"" : ""Test String2""
+                    ""Test"" : ""Test String"",
+                    ""Test2"" : ""Test String2""
                 }",
                new DictionaryMedia()
                    .With("Test", "Test String")
@@ -365,6 +365,22 @@ namespace MediaPrint.UnitTests
                    .ToString(),
                _output
            );
+        }
+
+        [Fact]
+        public void NonCaseSensitiveKeys()
+        {
+            var expected = new PrintableClass("Test Name", DateTime.Now);
+            Assert.Equal(
+                 expected.Name,
+                 new DictionaryMedia()
+                    .With(
+                        "TEST",
+                        expected
+                    )
+                    .Value<DictionaryMedia>("Test")
+                    .Value<string>("Name")
+            );
         }
     }
 }

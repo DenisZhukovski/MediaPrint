@@ -22,7 +22,7 @@ namespace MediaPrint
         }
 
         public DictionaryMedia(IFormatProvider formatProvider)
-            : this(new Dictionary<string, object>(), formatProvider)
+            : this(new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase), formatProvider)
         {
         }
 
@@ -41,14 +41,14 @@ namespace MediaPrint
 
         public IMedia Put(string name, object value)
         {
-            _media[name.ToUpperInvariant()] = value;
+            _media[name] = value;
             return this;
         }
 
         public T Value<T>(string name)
         {
             return new DictionaryValue<T>(
-                _media[name.ToUpperInvariant()],
+                _media[name],
                 _formatProvider
             ).Value;
         }
@@ -58,7 +58,7 @@ namespace MediaPrint
             if (Contains(name))
             {
                 return new DictionaryValue<T>(
-                    _media[name.ToUpperInvariant()],
+                    _media[name],
                     _formatProvider
                 ).Value;
             }
@@ -69,7 +69,7 @@ namespace MediaPrint
 
         public bool Contains(string name)
         {
-            return _media.ContainsKey(name.ToUpperInvariant());
+            return _media.ContainsKey(name);
         }
 
         public override string ToString()
