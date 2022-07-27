@@ -56,6 +56,26 @@ Sometimes it's necessary to have an access to objects' data but located in memor
 ```cs
 var myFooDictionary = new Foo().ToDictionary(); // Foo class should implement IPrintable interface
 ```
+# Useful Extensions
+```cs
+public static class PrintableExtensions
+{
+  public static JObject ToJObject(this IPrintable printable)
+  {
+      var dictionary = printable.ToDictionary();
+      var jObject = new JObject();
+      foreach (var obj in dictionary)
+      {
+          object value = obj.Value is IPrintable printableObj
+            ? printableObj.ToJObject()
+            : obj.Value;
+          jObject.Add(new JProperty(obj.Key, value));
+      }
+      return jObject;
+  }
+}
+```
+
 # Status
 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DenisZhukovski_MediaPrint&metric=coverage)](https://sonarcloud.io/dashboard?id=DenisZhukovski_MediaPrint)
