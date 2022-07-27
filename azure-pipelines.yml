@@ -18,7 +18,7 @@ variables:
   value: 'Release'
 - name: MajorMinorVersions
   value: '1.0'
-- name: outputDirectory: 
+- name: outputDirectory
   value: '$(build.binariesDirectory)/$(buildConfiguration)'
 - name: isDevelop
   value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
