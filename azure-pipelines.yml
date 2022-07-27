@@ -10,18 +10,29 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  releaseBuildNumber: '1.0.0'
-  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
-  isDevelop: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+- name: solution
+  value: '**/*.sln'
+- name: buildPlatform
+  value: 'Any CPU'
+- name: buildConfiguration
+  value: 'Release'
+- name: MajorMinorVersions
+  value: '1.0'
+- name: outputDirectory: 
+  value: '$(build.binariesDirectory)/$(buildConfiguration)'
+- name: isDevelop
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+- name: PatchNumber
+  ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+    value: 'PR'
+  ${{ else }}:
+    value: $[counter(variables['MajorMinorVersions'], 0)]
+- name: NugetPackageVersion
+  value: $[format('{0}.{1}', variables['MajorMinorVersions'], variables['PatchNumber'])]
 
-name: $(releaseBuildNumber).$(Build.BuildId)
+name: $(NugetPackageVersion).$(Build.BuildId)
 
 steps:
-- checkout: self
-  persistCredentials: true
 - task: NuGetToolInstaller@1
 - task: NuGetCommand@2
   inputs:
@@ -60,3 +71,10 @@ steps:
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+- task: GitHubRelease@1
+  displayName: 'GitHub release (create)'
+  condition: and(succeeded(), eq(variables.isDevelop, true))
+  inputs:
+    gitHubConnection: 'Github repositories'
+    tagSource: userSpecifiedTag
+    tag: '$(NugetPackageVersion)'
