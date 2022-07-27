@@ -20,7 +20,8 @@ variables:
 name: $(releaseBuildNumber).$(Build.BuildId)
 
 steps:
-
+- checkout: self
+  persistCredentials: true
 - task: NuGetToolInstaller@1
 - task: NuGetCommand@2
   inputs:
