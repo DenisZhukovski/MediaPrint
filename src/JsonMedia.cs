@@ -41,11 +41,8 @@ namespace MediaPrint
 
         public IMedia Put(string name, object value)
         {
-            _jObject.Add(
-                new JProperty(
-                    name,
-                    new Core.JValue(value, _formattig, _jsonSerializerSettings).Value()
-                )
+            _jObject[name] = JToken.FromObject(
+                new Core.JValue(value, _formattig, _jsonSerializerSettings).Value()
             );
             return this;
         }

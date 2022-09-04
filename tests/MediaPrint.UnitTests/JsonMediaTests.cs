@@ -152,5 +152,18 @@ namespace MediaPrint.UnitTests
                 _output
             );
         }
+
+        [Fact]
+        public void JsonMediaPutOverride()
+        {
+            Asserts.EqualJson(
+                @"{ ""Date"": ""1982-02-28T00:00:00"" }",
+                 new JsonMedia()
+                    .Put("Date", new DateTime(1983, 09, 22))
+                    .Put("Date", new DateTime(1982, 02, 28))
+                    .ToString(),
+                _output
+            );
+        }
     }
 }
