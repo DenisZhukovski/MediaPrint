@@ -165,5 +165,21 @@ namespace MediaPrint.UnitTests
                 _output
             );
         }
+
+        [Fact]
+        public void EnumDataIntoJson()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""FirstDayOfWeek"" : ""Monday"",
+                    ""SecondDayOfWeek"" : ""Tuesday""
+                }",
+                new JsonMedia()
+                    .With("FirstDayOfWeek", DayOfWeek.Monday)
+                    .With("SecondDayOfWeek", DayOfWeek.Tuesday)
+                    .ToString(),
+                _output
+            );
+        }
     }
 }
