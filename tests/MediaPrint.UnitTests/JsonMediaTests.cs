@@ -188,6 +188,7 @@ namespace MediaPrint.UnitTests
             /*
             * @todo #:60m/DEV Enum format for JsonMedia.
             * As a developer, I should be able to choose the format for an Enum between String or Number.
+            * Enum format should be provided as one of JsonMedia constructor arguments.
             */
 
             Asserts.EqualJson(
@@ -195,7 +196,7 @@ namespace MediaPrint.UnitTests
                     ""FirstDayOfWeek"" : ""1"",
                     ""SecondDayOfWeek"" : ""2""
                 }",
-                new JsonMedia() // enum format should be provided
+                new JsonMedia()
                     .With("FirstDayOfWeek", DayOfWeek.Monday)
                     .With("SecondDayOfWeek", DayOfWeek.Tuesday)
                     .ToString(),
