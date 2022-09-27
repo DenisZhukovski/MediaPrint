@@ -182,9 +182,14 @@ namespace MediaPrint.UnitTests
             );
         }
 
-        [Fact(Skip = "As a developer, I'm going to have ability to choose format for Enum between string or number.")]
+        [Fact(Skip = "Need to fix this test.")]
         public void EnumDataIntoJsonAsNumber()
         {
+            /*
+            * @todo #:60m/DEV Enum format for JsonMedia.
+            * As a developer, I should be able to choose the format for an Enum between String or Number.
+            */
+
             Asserts.EqualJson(
                 @"{
                     ""FirstDayOfWeek"" : ""1"",
