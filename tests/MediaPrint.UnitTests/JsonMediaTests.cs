@@ -165,5 +165,43 @@ namespace MediaPrint.UnitTests
                 _output
             );
         }
+
+        [Fact]
+        public void EnumDataIntoJsonAsString()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""FirstDayOfWeek"" : ""Monday"",
+                    ""SecondDayOfWeek"" : ""Tuesday""
+                }",
+                new JsonMedia()
+                    .With("FirstDayOfWeek", DayOfWeek.Monday)
+                    .With("SecondDayOfWeek", DayOfWeek.Tuesday)
+                    .ToString(),
+                _output
+            );
+        }
+
+        [Fact(Skip = "Need to fix this test.")]
+        public void EnumDataIntoJsonAsNumber()
+        {
+            /*
+            * @todo #:60m/DEV Enum format for JsonMedia.
+            * As a developer, I should be able to choose the format for an Enum between String or Number.
+            * Enum format should be provided as one of JsonMedia constructor arguments.
+            */
+
+            Asserts.EqualJson(
+                @"{
+                    ""FirstDayOfWeek"" : ""1"",
+                    ""SecondDayOfWeek"" : ""2""
+                }",
+                new JsonMedia()
+                    .With("FirstDayOfWeek", DayOfWeek.Monday)
+                    .With("SecondDayOfWeek", DayOfWeek.Tuesday)
+                    .ToString(),
+                _output
+            );
+        }
     }
 }
