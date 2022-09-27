@@ -167,7 +167,7 @@ namespace MediaPrint.UnitTests
         }
 
         [Fact]
-        public void EnumDataIntoJson()
+        public void EnumDataIntoJsonAsString()
         {
             Asserts.EqualJson(
                 @"{
@@ -175,6 +175,22 @@ namespace MediaPrint.UnitTests
                     ""SecondDayOfWeek"" : ""Tuesday""
                 }",
                 new JsonMedia()
+                    .With("FirstDayOfWeek", DayOfWeek.Monday)
+                    .With("SecondDayOfWeek", DayOfWeek.Tuesday)
+                    .ToString(),
+                _output
+            );
+        }
+
+        [Fact(Skip = "As a developer, I'm going to have ability to choose format for Enum between string or number.")]
+        public void EnumDataIntoJsonAsNumber()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""FirstDayOfWeek"" : ""1"",
+                    ""SecondDayOfWeek"" : ""2""
+                }",
+                new JsonMedia() // enum format should be provided
                     .With("FirstDayOfWeek", DayOfWeek.Monday)
                     .With("SecondDayOfWeek", DayOfWeek.Tuesday)
                     .ToString(),
