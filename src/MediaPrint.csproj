@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/DenisZhukovski/MediaPrint</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DenisZhukovski/MediaPrint</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>1.0.0.9</PackageVersion>
+    <PackageVersion>1.0.0.10</PackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
