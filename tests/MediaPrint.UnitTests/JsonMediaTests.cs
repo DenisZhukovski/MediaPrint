@@ -203,5 +203,19 @@ namespace MediaPrint.UnitTests
                 _output
             );
         }
+
+        [Fact]
+        public void NullDataIntoJson()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""NullValue"" : null
+                }",
+                new JsonMedia()
+                    .With("NullValue", null)
+                    .ToString(),
+                _output
+            );
+        }
     }
 }
