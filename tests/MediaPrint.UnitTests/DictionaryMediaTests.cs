@@ -382,5 +382,90 @@ namespace MediaPrint.UnitTests
                     .Value<string>("Name")
             );
         }
+
+        [Fact]
+        public void PutIf()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""Added"" : ""Value 1""
+                }",
+                new DictionaryMedia()
+                    .PutIf("Added", () => "Value 1", () => true)
+                    .PutIf("Skipped", () => "Value 2", () => false)
+                    .ToString(),
+                _output
+            );
+        }
+
+        [Fact]
+        public void Value_ReturnValue_IfValueExists()
+        {
+            Assert.Equal(
+               20,
+                new DictionaryMedia()
+                    .With("Key", 20)
+                    .Value<int>("Key")
+            );
+        }
+
+        [Fact]
+        public void Value_ThrowKeyNotFoundException_IfValueIsNotDefined()
+        {
+            Assert.Throws<KeyNotFoundException>(() =>
+                new DictionaryMedia()
+                    .Value<int>("Key")
+            );
+        }
+
+        [Fact]
+        public void ValueOrDefault_ReturnValue_WhenValueExists()
+        {
+            Assert.Equal(
+               20,
+                new DictionaryMedia()
+                    .With("Key", 20)
+                    .ValueOrDefault("Key", 123)
+            );
+        }
+
+        [Fact]
+        public void ValueOrDefault_ReturnDefault_IfNoValueExists()
+        {
+            Assert.Equal(
+               123,
+                new DictionaryMedia()
+                    .ValueOrDefault("Key", 123)
+            );
+        }
+
+        [Fact]
+        public void ValueOrDefault_ReturnDefault_EvenIfDefaultIsDefinedImplicitly()
+        {
+            Assert.Equal(
+               0,
+                new DictionaryMedia()
+                    .ValueOrDefault<int>("Key")
+            );
+        }
+
+        [Fact]
+        public void Contains_ReturnTrue_IfValueIsDefined()
+        {
+            Assert.True(
+                new DictionaryMedia()
+                    .With("Key", 20)
+                    .Contains("Key")
+            );
+        }
+
+        [Fact]
+        public void Contains_ReturnFalse_IfValueIsNotDefined()
+        {
+            Assert.False(
+                new DictionaryMedia()
+                    .Contains("Key")
+            );
+        }
     }
 }
