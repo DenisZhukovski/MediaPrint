@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace MediaPrint
 {
@@ -36,9 +35,9 @@ namespace MediaPrint
                     return (T)Enum.Parse(type, _value.ToString());
                 }
 
-                if (_value is JToken token)
+                if (_value is JsonElement element)
                 {
-                    return token.Value<T>();
+                    return element.Deserialize<T>();
                 }
 
                 if (type == typeof(string))
@@ -53,7 +52,7 @@ namespace MediaPrint
 
                 if (type.IsClass)
                 {
-                    return JsonConvert.DeserializeObject<T>(_value.ToString());
+                    return JsonSerializer.Deserialize<T>(_value.ToString());
                 }
 
                 return (T)Convert.ChangeType(_value, typeof(T), _formatProvider);
