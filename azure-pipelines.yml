@@ -75,6 +75,6 @@ steps:
   displayName: 'GitHub release (create)'
   condition: and(succeeded(), eq(variables.isDevelop, true))
   inputs:
-    gitHubConnection: 'Github repositories'
+    gitHubConnection: 'gitHubConnection'
     tagSource: userSpecifiedTag
     tag: '$(NugetPackageVersion)'
