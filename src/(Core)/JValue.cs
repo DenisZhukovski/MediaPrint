@@ -1,81 +1,70 @@
 ﻿using System;
 using System.Collections;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace MediaPrint.Core
 {
     public class JValue
     {
         private readonly object _value;
-        private readonly Formatting _formattig;
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
+        private readonly JsonSerializerOptions _jsonSerializerSettings;
 
         public JValue(
             object value,
-            Formatting formattig,
-            JsonSerializerSettings jsonSerializerSettings)
+            JsonSerializerOptions jsonSerializerSettings)
         {
             _value = value;
-            _formattig = formattig;
             _jsonSerializerSettings = jsonSerializerSettings;
         }
 
-        public object Value()
+        public JsonNode Value()
         {
-            if (_value == null || _value is JToken)
+            switch (_value)
             {
-                return _value;
-            }
-            else if (_value is JsonMedia jsonMedia)
-            {
-               return jsonMedia._jObject;
-            }
-            else if (_value is IPrintable printable)
-            {
-                return  printable.ToJson()._jObject;
-            }
-            else
-            {
-                if (_value is IEnumerable items && !(_value is string) && !(_value is IDictionary))
-                {
+                case null:
+                    return null;
+                case JsonNode node:
+                    return node;
+                case JsonMedia jsonMedia:
+                    return jsonMedia._jObject;
+                case IPrintable printable:
+                    return  printable.ToJson()._jObject;
+                case IEnumerable items when !(_value is string) && !(_value is IDictionary):
                     return ToJArray(items);
-                }
-                else if (_value is IDictionary dictionary)
-                {
-                    return JObject.Parse(JsonConvert.SerializeObject(dictionary, _formattig, _jsonSerializerSettings));
-                }
-                else if (_value is ValueType && _value is not Enum)
-                {
-                    return _value;
-                }
-                else
-                {
-                    return AsString();
-                }
+                case IDictionary dictionary:
+                    return JsonNode.Parse(JsonSerializer.Serialize(dictionary, _jsonSerializerSettings));
             }
+
+            if (_value is ValueType and not Enum)
+            {
+                return JsonValue.Create(_value);
+            }
+
+            return AsString();
         }
 
         private string AsString()
         {
             string valueAsString;
-            if (_value is DateTime)
+            if (_value is DateTime time)
             {
-                valueAsString = ((DateTime)_value).ToString(_jsonSerializerSettings.DateFormatString);
+                valueAsString = time.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
                 valueAsString = _value.ToString();
             }
-             return valueAsString;
+            return valueAsString;
         }
 
-        private JArray ToJArray(IEnumerable items)
+        private JsonArray ToJArray(IEnumerable items)
         {
-            var array = new JArray();
+            var array = new JsonArray();
             foreach (var item in items)
             {
-                array.Add(new JValue(item, _formattig, _jsonSerializerSettings).Value());
+                array.Add(new JValue(item, _jsonSerializerSettings).Value());
             }
             return array;
         }

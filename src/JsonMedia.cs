@@ -1,62 +1,52 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using MediaPrint.Core;
 
 namespace MediaPrint
 {
     public class JsonMedia : IMedia
     {
-        internal readonly JObject _jObject;
-        private readonly Formatting _formattig;
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
+        internal readonly JsonObject _jObject;
+        private readonly JsonSerializerOptions _jsonSerializerSettings;
 
         public JsonMedia()
             : this(DefaultJsonSerializerSettings())
         {
         }
 
-        public JsonMedia(JsonSerializerSettings jsonSerializerSettings)
-            : this(Formatting.Indented, jsonSerializerSettings)
+        public JsonMedia(JsonSerializerOptions jsonSerializerSettings)
+            : this(new JsonObject(), jsonSerializerSettings)
         {
         }
 
-        public JsonMedia(Formatting formattig, JsonSerializerSettings jsonSerializerSettings)
-            : this(new JObject(), formattig, jsonSerializerSettings)
-        {
-        }
-
-        public JsonMedia(JObject jObject)
-            : this(jObject, Formatting.Indented, DefaultJsonSerializerSettings())
+        public JsonMedia(JsonObject jObject)
+            : this(jObject, DefaultJsonSerializerSettings())
         {
         }
 
         public JsonMedia(
-            JObject jObject,
-            Formatting formattig,
-            JsonSerializerSettings jsonSerializerSettings)
+            JsonObject jObject,
+            JsonSerializerOptions jsonSerializerSettings)
         {
             _jObject = jObject;
-            _formattig = formattig;
             _jsonSerializerSettings = jsonSerializerSettings;
         }
 
         public IMedia Put(string name, object value)
         {
-            _jObject[name] = value != null
-                ? JToken.FromObject(
-                    new Core.JValue(value, _formattig, _jsonSerializerSettings).Value()
-                )
-                : null;
+            _jObject[name] = new JValue(value, _jsonSerializerSettings).Value();
             return this;
         }
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(_jObject, _formattig, _jsonSerializerSettings);
+            return JsonSerializer.Serialize(_jObject, _jsonSerializerSettings);
         }
 
-        private static JsonSerializerSettings DefaultJsonSerializerSettings()
+        private static JsonSerializerOptions DefaultJsonSerializerSettings()
         {
-            return new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat };
+            return new JsonSerializerOptions { WriteIndented = true };
         }
     }
 }

@@ -217,5 +217,20 @@ namespace MediaPrint.UnitTests
                 _output
             );
         }
+
+        [Fact]
+        public void PutIf()
+        {
+            Asserts.EqualJson(
+                @"{
+                    ""Added"" : ""Value 1""
+                }",
+                new JsonMedia()
+                    .PutIf("Added", () => "Value 1", () => true)
+                    .PutIf("Skipped", () => "Value 2", () => false)
+                    .ToString(),
+                _output
+            );
+        }
     }
 }

@@ -1,24 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net8.0;netstandard2.0;netstandard2.1</TargetFrameworks>
     <Authors>Denis Zhukovski, Yauheni Puntus</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.0.0.8</Version>
+    <Version>1.0.1</Version>
     <Title>Media Print</Title>
     <Description>This is specific package that helps elegant encapsulated objects to provide internal state as data.</Description>
     <PackageProjectUrl>https://github.com/DenisZhukovski/MediaPrint</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DenisZhukovski/MediaPrint</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>1.0.0.10</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.3.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.8.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.44.0.52574">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.15.0.81779">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -26,9 +25,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 </Project>

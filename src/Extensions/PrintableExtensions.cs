@@ -15,5 +15,25 @@
             printable.PrintTo(json);
             return json;
         }
+
+        public static T Value<T>(this IPrintable printable, string key)
+        {
+            return printable.ToDictionary().Value<T>(key);
+        }
+
+        public static T ValueOrDefault<T>(this IPrintable printable, string key)
+        {
+            return printable.ToDictionary().ValueOrDefault<T>(key, default);
+        }
+
+        public static T ValueOrDefault<T>(this IPrintable printable, string key, T defaultValue)
+        {
+            return printable.ToDictionary().ValueOrDefault(key, defaultValue);
+        }
+
+        public static bool HasValue(this IPrintable printable, string key)
+        {
+            return printable.ToDictionary().Contains(key);
+        }
     }
 }
